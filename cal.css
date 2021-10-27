@@ -1,0 +1,58 @@
+/*
+    Author: github.com/iamjam2
+    Description: CSS file for GitHub Project - Basic calculator made with web technologies
+    Licence: None... knock yourself out if you wanna use this for anything.
+*/
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main{
+    margin-top: 50px;
+    width: 239px;
+    padding: 4px;
+    border-width: 1px;
+    border-radius: 2%;
+    border-color:lightsteelblue;
+    border-style: solid;
+    background-color: lavender;
+}
+
+.screen{
+    width: 220px;
+    height: 85px;
+    margin: 4px;
+    resize: none;
+    border-color: none;
+    border-width: 0px;
+    background-color: steelblue;
+}
+
+.screen:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: none;
+    background-color: steelblue;
+  }
+
+
+.btn{
+    width: 50px;
+    height: 50px;
+    margin: 2px;
+    color:white;
+    border-radius: 20%;
+    box-shadow: lightseagreen 2px 2px 2px;
+    background-color: darkcyan;
+}
+
+.btn:focus{
+    outline: none;
+    box-shadow: none;
+    border-color: none;
+    background-color: steelblue;
+  }

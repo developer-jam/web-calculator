@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="GitHub Project - Basic calculator made with web technologies">
+        <meta name="author" content="github.com/iamjam2">
+        <title>Calculator</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="cal.css">
+    </head>
+    <body>
+        <div class="container main">
+            <div class="row">
+                <form class="form">
+                    <div class="form-group col-lg">
+                        <textarea type="text" class="form-control screen" id="cal-screen" rows="2"></textarea>
+                    </div>       
+                </form>
+            </div>
+            <div class="row">
+                <form class="form">
+                    <!--Button row 1-->
+                    <div class="form-group col-lg">
+                        <button type="button" class="btn col-1" id="clear-all">AC</button>
+                        <button type="button" class="btn col-1" id="power-two">x<sup>2</sup></button>
+                        <button type="button" class="btn col-1" id="modulus">%</button>
+                        <button type="button" class="btn col-1" id="delete"><i class="bi-backspace"></i></button>
+                    </div>
+
+                    <!--Button row 2-->
+                    <div class="form-group col-md-12">
+                        <button type="button" class="btn col-1" id="seven">7</button>
+                        <button type="button" class="btn col-1" id="eight">8</button>
+                        <button type="button" class="btn col-1" id="nine">9</button>
+                        <button type="button" class="btn col-1" id="divide">/</button>
+                    </div>
+
+                    <!--Button row 3-->
+                    <div class="form-group col-md-12">
+                        <button type="button" class="btn col-1" id="four">4</button>
+                        <button type="button" class="btn col-1" id="five">5</button>
+                        <button type="button" class="btn col-1" id="six">6</button>
+                        <button type="button" class="btn col-1" id="multiply">x</button>
+                    </div>
+
+                    <!--Button row 4-->
+                    <div class="form-group col-md-12">
+                        <button type="button" class="btn col-1" id="one">1</button>
+                        <button type="button" class="btn col-1" id="two">2</button>
+                        <button type="button" class="btn col-1" id="three">3</button>
+                        <button type="button" class="btn col-1" id="minus">-</button>
+                    </div>
+
+                    <!--Button row 5-->
+                    <div class="form-group col-md-12">
+                        <button type="button" class="btn col-1" id="zero">0</button>
+                        <button type="button" class="btn col-1" id="period">.</button>
+                        <button type="button" class="btn col-1" id="equal-to">=</button>
+                        <button type="button" class="btn col-1" id="plus">+</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="cal.js"></script>
+    </body>
+</html>
