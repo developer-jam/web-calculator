@@ -10,44 +10,44 @@ $(document).ready(function(){
     const calExpr = [];
     const operators = [];
 
-    function updateScreen(){$("#cal-screen").val(screenText);}
+    function updateScreen(){$("#cal-screen").val(screenText);} //Updates screen from screenText variable...
 
     function isNumber(testChar){
-        var numberRegEx = /[0-9]/g; //Regular expression for digits 0 - 9
+        var numberRegEx = /[0-9]/g; //Regular expression for digits 0 - 9 with global search modifier...
         
         return numberRegEx.test(testChar);
     }
 
     function screenHasAnswer(){
-        var equalToRegEx = /=/m;
+        var equalToRegEx = /=/m; //Regular expression to find the equal character with multi-line search modifier...
 
         return equalToRegEx.test(screenText);
     }
 
-    function lastIsNumber(){//Checks if the last character on screen is a number
+    function lastIsNumber(){ //Checks if the last character on screen is a number...
         var lastChar = screenText.slice(screenText.length - 1);
         
         return isNumber(lastChar); //True or False return from function with RegEx
     }
 
-    function lastIsPower(){
+    function lastIsPower(){ //Checks if the last character on the screen is a power...
         var lastChar = screenText.slice(screenText.length - 1);
 
         return lastChar == "²";
     }
 
-    function lastIsPeriod(){
+    function lastIsPeriod(){ //Checks if the last character on the screen is a period...
         var lastChar = screenText.slice(screenText.length - 1);
 
         return lastChar == ".";
     }
 
-    function addToExpr(inputValue){
+    function addToExpr(inputValue){ //Adds values and characters to an array holding the full expression/equation to be calculated...
         calExpr.push(inputValue);
         castedValue = 0;
     }
 
-    function popFromExpr(){
+    function popFromExpr(){ //removes items from the arrays correctly as per the displayed expression/equation, when backspace is used..
         var exprLength = screenText.length;
 
         if(exprLength < operators[operators.length - 1]){
@@ -56,10 +56,10 @@ $(document).ready(function(){
         }
     }
 
-    function doCal(operator, position){
-        var calDone = false;
+    function doCal(operator, position){ //Peforms the calculations from what's stored on the array...
+        var calDone = false; //Confirms that the calculation has been done and saved to the array correctly (Error handling to be added here)...
 
-        switch(operator){
+        switch(operator){ //Calculations are done and the answer is saved to the array block on the left side, ex: [1][+][2] becomes [3][+][2]
             case "/":
                 calExpr[position - 1] = calExpr[position - 1] / calExpr[position + 1];
                 calDone = true;
@@ -81,31 +81,38 @@ $(document).ready(function(){
                 calDone = true;
                 break;
             default:
-                //No default case...
+                //No default case, input is limited by the buttons on the calculator...
         }
 
-        calExpr.splice(position + 1, 1);
-        calExpr.splice(position, 1);
+        calExpr.splice(position + 1, 1); //Removes the array value on the right side block after the calculation is performed, ex: the above [3][+][2] becomes [3][+]
+        calExpr.splice(position, 1); //Removes the operator from the array after the calculation is performed, ex: the above [3][+] becomes [3] the answer from the calculation.
 
         return calDone;
     }
 
-    function equalTo(){
+    function equalTo(){ //Runs when the equal button is pressed...
+        castedValue = 0;
+        
         if(!(screenHasAnswer())){
             var solution = ""
             var storedExprLength = calExpr.length;
 
-            if(lastIsNumber() || lastIsPower() || !(screenText == "")){
-                //check for and peform divisions (/)...
-                if(storedExprLength == 0){
-                
-                castedValue = Number(screenText.slice(0, screenText.length - 1));
-                castedValue = Math.pow(castedValue,2);
-                addToExpr(castedValue);
-                solution = "= " + String(calExpr[0]);
-                calExpr.pop();
+            if((lastIsNumber() || lastIsPower()) && !(screenText == "")){ //Last character on screen must be either a number or a power or the screen and the screen must not be blank... 
+                if(storedExprLength == 0){ //If nothing is stored on the array yet then no operator has been added to the calculation.  
+                    if(lastIsPower()){ //Only the square of a number is being calculated...
+                        castedValue = Number(screenText.slice(0, screenText.length - 1));
+                        castedValue = Math.pow(castedValue,2);
+                        addToExpr(castedValue);
+                        solution = "= " + String(calExpr[0]);
+                        calExpr.pop();
+                    }
+                    else{ //Only a plain number is on the screen...
+                        addToExpr(Number(screenText));
+                        solution = "= " + String(calExpr[0]);
+                        calExpr.pop();
+                    }
                 }
-                else{
+                else{ //Else there is an operator in the calculation...
                     if(lastIsPower()){
                         castedValue = Number(screenText.slice(operators[operators.length -1] + 1, screenText.length - 1));
                         castedValue = Math.pow(castedValue,2);
@@ -116,8 +123,9 @@ $(document).ready(function(){
                         addToExpr(castedValue);
                     }
 
-                    storedExprLength = calExpr.length;
-
+                    storedExprLength = calExpr.length; //The last value is added to the array, update the saved length of the array..
+                    
+                    //Loop through the array and perform calculations according to the correct mathematical precidence...
                     for(let count = 1; count < storedExprLength -1 ; count += 2){
                         if(calExpr[count] == "/"){ if(doCal("/", count)){ count -= 2; storedExprLength = calExpr.length;}}
                     }
@@ -137,20 +145,21 @@ $(document).ready(function(){
                     for(let count = 1; count < storedExprLength -1 ; count += 2){
                         if(calExpr[count] == "-"){ if(doCal("-", count)){ count -= 2; storedExprLength = calExpr.length;}}
                     }
-                
+                    
+                    //After these loops, only 1 array block remains with the final answer...
                     solution = "= " + String(calExpr[0]);
                     calExpr.pop();
                 }
             }
-            else solution = "Error, invalid input!";
+            else solution = "Error, invalid input!"; //The entered expression/equation cannot be calculated...
 
-            screenText += "\n\n" + solution;
+            screenText += "\n\n" + solution; //Display the solution calculated or feedback... 
 
             updateScreen();
         }
     }
 
-    function clearAll(){
+    function clearAll(){ //Clears the screen and all arrays...
         screenText = "";
 
         while(operators.length > 0){operators.pop();}
@@ -158,7 +167,7 @@ $(document).ready(function(){
         updateScreen();
     }
 
-    function backspace(){
+    function backspace(){ //Clears the last character on screen or the entire screen and arrays if there was a solution displayed...
         if(screenHasAnswer()){
             clearAll();
         }
@@ -175,12 +184,12 @@ $(document).ready(function(){
         }
     }
 
-    function btnPress(pressedChar){
-        if(screenHasAnswer()){
+    function btnPress(pressedChar){ //Computes what to do with each button pressed...
+        if(screenHasAnswer()){ //If an answer is displayed, the screen and arrays should first be cleared...
             clearAll();
         }
 
-        if(isNumber(pressedChar)){
+        if(isNumber(pressedChar)){ //If the button pressed is a number...
             if(!(lastIsPower())){
                 if(!(screenText == "" || lastIsNumber() || lastIsPeriod())){//Screen is not blank or the last char on screen is not a number
                     pressedChar = " " + pressedChar;
@@ -189,7 +198,7 @@ $(document).ready(function(){
                 screenText += pressedChar;
             }
         }
-        else{//If pressed key is not a digit
+        else{ //If the button pressed is not a number...
             if(!(screenText == "")  && (lastIsNumber() || lastIsPower())){//Non-numeric chars can only go after numbers and powers
                 if(pressedChar == "^"){//If non-numeric character is a power
                     if(!(lastIsPower())) screenText += "²";
@@ -203,12 +212,10 @@ $(document).ready(function(){
                             castedValue = Number(screenText.slice(0, screenText.length - 1));
                             castedValue = Math.pow(castedValue,2);
                             addToExpr(castedValue);
-                            //console.log(calExpr[0]);
                         }
                         else{
                             castedValue = Number(screenText.slice(0, screenText.length));
                             addToExpr(castedValue);
-                            //console.log(calExpr[0]);
                         }
                     }
                     else{//If there already is an operator in the expression
